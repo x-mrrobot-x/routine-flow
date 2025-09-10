@@ -9,110 +9,98 @@
     <title>Routine Flow - Gerenciador de Rotinas</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/src/assets/styles/variables.css" />
-    <link rel="stylesheet" href="/src/assets/styles/reset.css" />
-    <link rel="stylesheet" href="/src/assets/styles/shared.css" />
-    <link rel="stylesheet" href="/src/assets/styles/base.css" />
-    <link rel="stylesheet" href="/src/assets/styles/button.css" />
-    <link rel="stylesheet" href="/src/assets/styles/header.css" />
-    <link rel="stylesheet" href="/src/assets/styles/filters.css" />
-    <link rel="stylesheet" href="/src/assets/styles/form.css" />
-    <link rel="stylesheet" href="/src/assets/styles/main.css" />
-    <link rel="stylesheet" href="/src/assets/styles/modal.css" />
-    <link rel="stylesheet" href="/src/assets/styles/categories.css" />
-    <link rel="stylesheet" href="/src/assets/styles/routines.css" />
-    <link rel="stylesheet" href="/src/assets/styles/commands.css" />
-    <link rel="stylesheet" href="/src/assets/styles/app-picker.css" />
-    <link rel="stylesheet" href="/src/assets/styles/task-picker.css" />
-    <link rel="stylesheet" href="/src/assets/styles/settings.css" />
-    <link rel="stylesheet" href="/src/assets/styles/toast.css" />
+    <link rel="stylesheet" href="src/assets/styles/variables.css" />
+    <link rel="stylesheet" href="src/assets/styles/reset.css" />
+    <link rel="stylesheet" href="src/assets/styles/shared.css" />
+    <link rel="stylesheet" href="src/assets/styles/base.css" />
+    <link rel="stylesheet" href="src/assets/styles/button.css" />
+    <link rel="stylesheet" href="src/assets/styles/header.css" />
+    <link rel="stylesheet" href="src/assets/styles/filters.css" />
+    <link rel="stylesheet" href="src/assets/styles/form.css" />
+    <link rel="stylesheet" href="src/assets/styles/main.css" />
+    <link rel="stylesheet" href="src/assets/styles/modal.css" />
+    <link rel="stylesheet" href="src/assets/styles/categories.css" />
+    <link rel="stylesheet" href="src/assets/styles/routines.css" />
+    <link rel="stylesheet" href="src/assets/styles/commands.css" />
+    <link rel="stylesheet" href="src/assets/styles/app-picker.css" />
+    <link rel="stylesheet" href="src/assets/styles/task-picker.css" />
+    <link rel="stylesheet" href="src/assets/styles/settings.css" />
+    <link rel="stylesheet" href="src/assets/styles/toast.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Debug -->
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-    <script>
-      eruda.init();
-    </script>
-
     <!-- Scripts -->
-    <script src="/src/services/EnvironmentManager.js" defer></script>
-    <script src="/src/shared/Utils.js" defer></script>
-    <script src="/src/shared/DOM.js" defer></script>
-    <script src="/src/services/I18n.js" defer></script>
-    <script src="/src/services/Icons.js" defer></script>
-    <script src="/src/services/TimeService.js" defer></script>
-    <script src="/src/services/PaginationManager.js" defer></script>
-    <script src="/src/components/Modal.js" defer></script>
-    <script src="/src/components/Toast.js" defer></script>
-    <script src="/src/features/categories/data/categories.js" defer></script>
-    <script src="/src/features/routine/data/routines.js" defer></script>
-    <script src="/src/features/routine/data/apps.js" defer></script>
-    <script src="/src/features/routine/data/tasks.js" defer></script>
+    <script src="src/services/EnvironmentManager.js" defer></script>
+    <script src="src/shared/Utils.js" defer></script>
+    <script src="src/shared/DOM.js" defer></script>
+    <script src="src/services/I18n.js" defer></script>
+    <script src="src/services/Icons.js" defer></script>
+    <script src="src/services/TimeService.js" defer></script>
+    <script src="src/services/PaginationManager.js" defer></script>
+    <script src="src/components/Modal.js" defer></script>
+    <script src="src/components/Toast.js" defer></script>
+    <script src="src/features/categories/data/categories.js" defer></script>
+    <script src="src/features/routine/data/routines.js" defer></script>
+    <script src="src/features/routine/data/apps.js" defer></script>
+    <script src="src/features/routine/data/tasks.js" defer></script>
     <script
-      src="/src/features/routine/services/RoutineService.js"
+      src="src/features/routine/services/RoutineService.js"
       defer
     ></script>
     <script
-      src="/src/features/categories/services/CategoryService.js"
+      src="src/features/categories/services/CategoryService.js"
       defer
     ></script>
     <script
-      src="/src/features/categories/components/CategoryRenderer.js"
+      src="src/features/categories/components/CategoryRenderer.js"
       defer
     ></script>
     <script
-      src="/src/features/routine/components/RoutineRenderer.js"
+      src="src/features/routine/components/RoutineRenderer.js"
+      defer
+    ></script>
+    <script src="src/features/routine/services/RoutineFilter.js" defer></script>
+    <script
+      src="src/features/routine/components/CommandDropdown.js"
       defer
     ></script>
     <script
-      src="/src/features/routine/services/RoutineFilter.js"
-      defer
-    ></script>
-    <script
-      src="/src/features/routine/components/CommandDropdown.js"
-      defer
-    ></script>
-    <script
-      src="/src/features/routine/services/RoutineActions.js"
+      src="src/features/routine/services/RoutineActions.js"
       defer
     ></script>
 
     <script
-      src="/src/features/categories/components/CategoryForm.js"
+      src="src/features/categories/components/CategoryForm.js"
       defer
     ></script>
     <script
-      src="/src/features/categories/components/CategoryModal.js"
+      src="src/features/categories/components/CategoryModal.js"
+      defer
+    ></script>
+    <script src="src/features/routine/components/RoutineForm.js" defer></script>
+    <script
+      src="src/features/routine/components/RoutineModal.js"
       defer
     ></script>
     <script
-      src="/src/features/routine/components/RoutineForm.js"
+      src="src/features/routine/components/DeleteRoutineModal.js"
       defer
     ></script>
     <script
-      src="/src/features/routine/components/RoutineModal.js"
+      src="src/features/routine/components/AppPickerModal.js"
       defer
     ></script>
     <script
-      src="/src/features/routine/components/DeleteRoutineModal.js"
+      src="src/features/routine/components/TaskPickerModal.js"
       defer
     ></script>
-    <script
-      src="/src/features/routine/components/AppPickerModal.js"
-      defer
-    ></script>
-    <script
-      src="/src/features/routine/components/TaskPickerModal.js"
-      defer
-    ></script>
-    <script src="/src/features/settings/SettingsService.js" defer></script>
-    <script src="/src/features/settings/SettingsModal.js" defer></script>
+    <script src="src/features/settings/SettingsService.js" defer></script>
+    <script src="src/features/settings/SettingsModal.js" defer></script>
 
-    <script src="/src/services/EventBus.js" defer></script>
-    <script src="/src/App.js" defer></script>
+    <script src="src/services/EventBus.js" defer></script>
+    <script src="src/App.js" defer></script>
   </head>
 
   <body class="loading">

@@ -3,7 +3,7 @@ const EnvironmentManager = (() => {
     const NAME = "web";
     const WORK_DIR = ".";
     const LANG_CODE = "pt-BR";
-    const ICON_PATH = "/src/assets/icons/";
+    const ICON_PATH = "src/assets/icons/";
 
     const STORAGE_KEYS = {
       routines: "@routine-flow:routines",
