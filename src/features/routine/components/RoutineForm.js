@@ -2,10 +2,10 @@ const RoutineFormUtils = (() => {
   const ERROR_IDS = [
     "title-error",
     "description-error",
+    "command-error",
     "priority-error",
     "time-error",
-    "days-error",
-    "command-error"
+    "frequency-error"
   ];
 
   const REQUIRED_FIELDS = {
@@ -22,11 +22,13 @@ const RoutineFormUtils = (() => {
     return {
       title: getValue(elements.titleInput),
       description: getValue(elements.descriptionInput),
+      command: getValue(elements.commandInput),
+      categoryId: getValue(elements.categorySelect),
       priority: getValue(elements.prioritySelect),
       time: Utils.timeToSeconds(getValue(elements.timeInput)),
       selectedDays: RoutineModal.getState("selectedDays"),
-      command: getValue(elements.commandInput),
-      categoryId: getValue(elements.categorySelect)
+      specificDate: RoutineModal.getState("specificDate"),
+      frequencyType: RoutineModal.getState("frequencyType")
     };
   }
 
@@ -43,19 +45,21 @@ const RoutineFormUtils = (() => {
   }
 
   function validateCommand(command, errors) {
-    if (!command) return;
-
-    const isValid = command.startsWith("/");
-    if (!isValid) {
+    if (command && !command.startsWith("/")) {
       showError("command-error", I18n.get("form_error_command_invalid"));
       errors.push("command");
     }
   }
 
-  function validateDays(days, errors) {
-    if (days.length === 0) {
-      showError("days-error", I18n.get("form_error_days_required"));
+  function validateFrequency(data, errors) {
+    const { frequencyType, selectedDays, specificDate } = data;
+
+    if (frequencyType === "days" && selectedDays.length === 0) {
+      showError("frequency-error", I18n.get("form_error_days_required"));
       errors.push("days");
+    } else if (frequencyType === "specific" && !specificDate) {
+      showError("frequency-error", I18n.get("form_error_date_required"));
+      errors.push("date");
     }
   }
 
@@ -66,13 +70,17 @@ const RoutineFormUtils = (() => {
     validateField("description", data.description, errors);
     validateCommand(data.command, errors);
     validateField("time", data.time, errors);
-    validateDays(data.selectedDays, errors);
+    validateFrequency(data, errors);
 
     return errors.length === 0;
   }
 
   function createData(data) {
-    const frequency = [...data.selectedDays.sort()];
+    const frequency =
+      data.frequencyType === "days"
+        ? [...data.selectedDays.sort()]
+        : data.specificDate;
+
     return {
       title: data.title,
       description: data.description,
@@ -85,7 +93,7 @@ const RoutineFormUtils = (() => {
   }
 
   function populateFields(routine, elements) {
-    const fieldMappings = [
+    const mappings = [
       [elements.titleInput, routine.title],
       [elements.descriptionInput, routine.description],
       [elements.commandInput, routine.command],
@@ -94,7 +102,7 @@ const RoutineFormUtils = (() => {
       [elements.timeInput, Utils.secondsToTime(routine.time)]
     ];
 
-    fieldMappings.forEach(([field, value]) => (field.value = value));
+    mappings.forEach(([field, value]) => (field.value = value));
   }
 
   function updateDays(frequency, btns) {
@@ -104,8 +112,20 @@ const RoutineFormUtils = (() => {
     });
   }
 
+  function updateFrequencyDisplay(frequencyType, elements) {
+    const isDaily = frequencyType === "days";
+
+    elements.weekdaysContainer.style.display = isDaily ? "flex" : "none";
+    elements.specificDateContainer.style.display = isDaily ? "none" : "block";
+
+    elements.frequencyBtns.forEach(btn => {
+      btn.classList.toggle("active", frequencyType === btn.dataset.type);
+    });
+  }
+
   function clearErrors() {
-    ERROR_IDS.forEach(id => {
+    const errorIds = ERROR_IDS;
+    errorIds.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.textContent = "";
     });
@@ -125,6 +145,7 @@ const RoutineFormUtils = (() => {
     createData,
     populateFields,
     updateDays,
+    updateFrequencyDisplay,
     clearErrors,
     resetDays,
     focusTitle
@@ -139,16 +160,20 @@ const RoutineForm = (() => {
     commandInput: DOM.$("#command"),
     prioritySelect: DOM.$("#priority"),
     timeInput: DOM.$("#time"),
-    daysContainer: DOM.$("#days-container"),
-    dayBtns: DOM.$$(".day-button"),
+    frequencyButtons: DOM.$("#frequency-buttons"),
+    frequencyBtns: DOM.$$("#frequency-buttons button"),
+    weekdaysContainer: DOM.$("#weekdays-container"),
+    dayBtns: DOM.$$(".day-btn"),
+    specificDateContainer: DOM.$("#specific-date-container"),
+    specificDateInput: DOM.$("#specific-date-input"),
     categorySelect: DOM.$("#category-select")
   };
 
   function handleEdit(data) {
     const id = RoutineModal.getState("routineToEdit");
     const original = RoutineService.getById(id);
-    const oldCategoryId = original.categoryId;
-    const newCategoryId = data.categoryId;
+    const { categoryId: oldCategoryId } = original;
+    const { categoryId: newCategoryId } = data;
 
     RoutineService.update(id, data);
 
@@ -166,6 +191,7 @@ const RoutineForm = (() => {
       ...data,
       active: true
     };
+
     RoutineService.add(routine);
     Toast.show("success", "toast_routine_created");
   }
@@ -176,10 +202,9 @@ const RoutineForm = (() => {
 
     if (value.startsWith("/")) {
       const suggestions = CommandUtils.filterSuggestions(value);
-      suggestions.length > 0
+      return suggestions.length > 0
         ? CommandDropdown.open(suggestions)
         : CommandDropdown.close();
-      return;
     }
 
     if (visible) CommandDropdown.close();
@@ -187,7 +212,16 @@ const RoutineForm = (() => {
 
   function setupEdit(routine) {
     RoutineFormUtils.populateFields(routine, elements);
-    RoutineFormUtils.updateDays(routine.frequency, elements.dayBtns);
+
+    const frequencyType = RoutineModal.getState("frequencyType");
+    RoutineFormUtils.updateFrequencyDisplay(frequencyType, elements);
+
+    if (frequencyType === "days") {
+      RoutineFormUtils.updateDays(routine.frequency, elements.dayBtns);
+    } else {
+      elements.specificDateInput.value = routine.frequency;
+    }
+
     RoutineFormUtils.clearErrors();
     RoutineFormUtils.focusTitle(elements.titleInput);
   }
@@ -203,10 +237,12 @@ const RoutineForm = (() => {
     RoutineFormUtils.clearErrors();
     RoutineFormUtils.resetDays(elements.dayBtns);
 
+    RoutineModal.setState("frequencyType", "days");
+    RoutineFormUtils.updateFrequencyDisplay("days", elements);
+    elements.specificDateInput.value = "";
+
     const selected = RoutineFilter.getState("currentCategoryFilter");
-    if (selected !== "all") {
-      elements.categorySelect.value = selected;
-    }
+    if (selected !== "all") elements.categorySelect.value = selected;
 
     RoutineFormUtils.focusTitle(elements.titleInput);
   }
@@ -219,11 +255,9 @@ const RoutineForm = (() => {
     if (!RoutineFormUtils.validateForm(formData)) return;
 
     const data = RoutineFormUtils.createData(formData);
-    if (RoutineModal.getState("isEditMode")) {
-      handleEdit(data);
-    } else {
-      handleCreate(data);
-    }
+    const isEdit = RoutineModal.getState("isEditMode");
+
+    isEdit ? handleEdit(data) : handleCreate(data);
     RoutineModal.close();
   }
 
@@ -238,6 +272,18 @@ const RoutineForm = (() => {
 
     e.target.classList.toggle("selected");
     updateDays(day, e.target.classList.contains("selected"));
+  }
+
+  function setFrequencyType(e) {
+    const { type } = e.target.dataset;
+    if (!type) return;
+
+    RoutineModal.setState("frequencyType", type);
+    RoutineFormUtils.updateFrequencyDisplay(type, elements);
+  }
+
+  function handleSpecificDateInput(e) {
+    RoutineModal.setState("specificDate", e.target.value);
   }
 
   function populateCategorySelect() {
@@ -257,14 +303,18 @@ const RoutineForm = (() => {
   const handlers = {
     submit: handleSubmit,
     input: handleCommandInput,
-    toggle: toggleDay
+    frequency: setFrequencyType,
+    toggle: toggleDay,
+    dateInput: handleSpecificDateInput
   };
 
   function bindEvents() {
     const bindings = [
       [elements.form, "submit", handlers.submit],
       [elements.commandInput, "input", handlers.input],
-      [elements.daysContainer, "click", handlers.toggle]
+      [elements.frequencyButtons, "click", handlers.frequency],
+      [elements.weekdaysContainer, "click", handlers.toggle],
+      [elements.specificDateInput, "input", handlers.dateInput]
     ];
 
     bindings.forEach(([el, event, handler]) =>

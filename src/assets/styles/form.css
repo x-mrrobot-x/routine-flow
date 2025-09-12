@@ -9,11 +9,23 @@
   flex: 1;
 }
 
+.form-group-wrapper {
+  display: flex;
+  align-items: baseline;
+  margin-top: var(--space-xs);
+  gap: var(--space-sm);
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
   margin-top: var(--space-xs);
   gap: 0.6rem;
+}
+
+.form-group-wrapper .form-group {
+  flex: 1;
+  margin-top: 0;
 }
 
 .form-group:first-child {

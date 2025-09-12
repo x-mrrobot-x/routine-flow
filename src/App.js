@@ -6,7 +6,7 @@ const App = (() => {
     CategoryService.init();
     CategoryRenderer.init();
     RoutineRenderer.init();
-    TimeService.init();
+    TimeWatcher.init();
     RoutineFilter.init();
     RoutineActions.init();
 

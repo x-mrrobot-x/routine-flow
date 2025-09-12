@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Routine Flow - Gerenciador de Rotinas</title>
-
+    
     <!-- Styles -->
     <link rel="stylesheet" href="src/assets/styles/variables.css" />
     <link rel="stylesheet" href="src/assets/styles/reset.css" />
@@ -37,7 +37,8 @@
     <script src="src/shared/DOM.js" defer></script>
     <script src="src/services/I18n.js" defer></script>
     <script src="src/services/Icons.js" defer></script>
-    <script src="src/services/TimeService.js" defer></script>
+    <script src="src/shared/RoutineCalculator.js" defer></script>
+    <script src="src/services/TimeWatcher.js" defer></script>
     <script src="src/services/PaginationManager.js" defer></script>
     <script src="src/components/Modal.js" defer></script>
     <script src="src/components/Toast.js" defer></script>
@@ -427,7 +428,7 @@
 
         <div class="modal-body">
           <form id="routine-form" class="form">
-            <div class="form-content">
+            <section class="form-content">
               <div class="form-group">
                 <label
                   for="title"
@@ -483,35 +484,37 @@
                 <div class="form-error" id="command-error"></div>
               </div>
 
-              <div class="form-group">
-                <label
-                  for="category-select"
-                  class="form-label"
-                  data-i18n="form_label_category"
-                  >Categoria</label
-                >
-                <select
-                  id="category-select"
-                  name="category"
-                  class="form-select"
-                ></select>
-              </div>
+              <div class="form-group-wrapper">
+                <div class="form-group">
+                  <label
+                    for="category-select"
+                    class="form-label"
+                    data-i18n="form_label_category"
+                    >Categoria</label
+                  >
+                  <select
+                    id="category-select"
+                    name="category"
+                    class="form-select"
+                  ></select>
+                </div>
 
-              <div class="form-group">
-                <label
-                  for="priority"
-                  class="form-label"
-                  data-i18n="form_label_priority"
-                  >Prioridade</label
-                >
-                <select id="priority" name="priority" class="form-select">
-                  <option value="low" data-i18n="priority_low">Baixa</option>
-                  <option value="medium" selected data-i18n="priority_medium">
-                    Média
-                  </option>
-                  <option value="high" data-i18n="priority_high">Alta</option>
-                </select>
-                <div class="form-error" id="priority-error"></div>
+                <div class="form-group">
+                  <label
+                    for="priority"
+                    class="form-label"
+                    data-i18n="form_label_priority"
+                    >Prioridade</label
+                  >
+                  <select id="priority" name="priority" class="form-select">
+                    <option value="low" data-i18n="priority_low">Baixa</option>
+                    <option value="medium" selected data-i18n="priority_medium">
+                      Média
+                    </option>
+                    <option value="high" data-i18n="priority_high">Alta</option>
+                  </select>
+                  <div class="form-error" id="priority-error"></div>
+                </div>
               </div>
 
               <div class="form-group">
@@ -523,70 +526,106 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label" data-i18n="form_label_days"
-                  >Dias da semana</label
-                >
-                <div class="days-container" id="days-container">
+                <label class="form-label" data-i18n="form_label_frequency">
+                  Frequência
+                </label>
+
+                <div class="frequency-buttons" id="frequency-buttons">
                   <button
                     type="button"
-                    class="day-button"
-                    data-day="0"
-                    data-i18n="day_sun"
+                    id="weekdays-btn"
+                    class="button button-outline"
+                    data-type="days"
+                    data-i18n="form_label_weekdays"
                   >
-                    Dom
+                    Dias da semana
                   </button>
                   <button
                     type="button"
-                    class="day-button"
-                    data-day="1"
-                    data-i18n="day_mon"
+                    id="specific-date-btn"
+                    class="button button-outline"
+                    data-type="specific"
+                    data-i18n="form_label_specific_date"
                   >
-                    Seg
-                  </button>
-                  <button
-                    type="button"
-                    class="day-button"
-                    data-day="2"
-                    data-i18n="day_tue"
-                  >
-                    Ter
-                  </button>
-                  <button
-                    type="button"
-                    class="day-button"
-                    data-day="3"
-                    data-i18n="day_wed"
-                  >
-                    Qua
-                  </button>
-                  <button
-                    type="button"
-                    class="day-button"
-                    data-day="4"
-                    data-i18n="day_thu"
-                  >
-                    Qui
-                  </button>
-                  <button
-                    type="button"
-                    class="day-button"
-                    data-day="5"
-                    data-i18n="day_fri"
-                  >
-                    Sex
-                  </button>
-                  <button
-                    type="button"
-                    class="day-button"
-                    data-day="6"
-                    data-i18n="day_sat"
-                  >
-                    Sáb
+                    Dia específico
                   </button>
                 </div>
-                <div class="form-error" id="days-error"></div>
+
+                <div id="frequency-selection" class="frequency-selection">
+                  <div id="weekdays-container" class="weekdays-container">
+                    <button
+                      type="button"
+                      class="day-btn"
+                      data-day="0"
+                      data-i18n="day_sun"
+                    >
+                      Dom
+                    </button>
+                    <button
+                      type="button"
+                      class="day-btn"
+                      data-day="1"
+                      data-i18n="day_mon"
+                    >
+                      Seg
+                    </button>
+                    <button
+                      type="button"
+                      class="day-btn"
+                      data-day="2"
+                      data-i18n="day_tue"
+                    >
+                      Ter
+                    </button>
+                    <button
+                      type="button"
+                      class="day-btn"
+                      data-day="3"
+                      data-i18n="day_wed"
+                    >
+                      Qua
+                    </button>
+                    <button
+                      type="button"
+                      class="day-btn"
+                      data-day="4"
+                      data-i18n="day_thu"
+                    >
+                      Qui
+                    </button>
+                    <button
+                      type="button"
+                      class="day-btn"
+                      data-day="5"
+                      data-i18n="day_fri"
+                    >
+                      Sex
+                    </button>
+                    <button
+                      type="button"
+                      class="day-btn"
+                      data-day="6"
+                      data-i18n="day_sat"
+                    >
+                      Sáb
+                    </button>
+                  </div>
+
+                  <div
+                    id="specific-date-container"
+                    class="specific-date-container"
+                  >
+                    <input
+                      type="date"
+                      id="specific-date-input"
+                      class="specific-date-input"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-error" id="frequency-error"></div>
               </div>
-            </div>
+            </section>
 
             <footer class="modal-actions">
               <button

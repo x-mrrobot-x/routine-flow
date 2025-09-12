@@ -16,10 +16,24 @@ const RoutineRenderUtils = (() => {
   }
 
   function createDayTags(frequency) {
-    const tags = frequency.map(
-      day => `<span class="day-tag">${Utils.getDayName(day)}</span>`
-    );
-    return tags.join("");
+    if (Array.isArray(frequency)) {
+      const tags = frequency.map(
+        day => `<span class="day-tag">${Utils.getDayName(day)}</span>`
+      );
+      return tags.join("");
+    }
+
+    if (typeof frequency === "string") {
+      const date = new Date(frequency + "T00:00:00");
+      const formattedDate = date.toLocaleDateString(ENV.langCode, {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+      return `<span class="day-tag">${formattedDate}</span>`;
+    }
+
+    return "";
   }
 
   function createCommand(command) {
@@ -70,7 +84,7 @@ const RoutineRenderUtils = (() => {
   }
 
   function getCardClass(routine) {
-    return `routine-card ${!routine.active ? "inactive" : ""}`;
+    return `routine-card${!routine.active ? " inactive" : ""}`;
   }
 
   function clearGrid(elements) {
@@ -85,8 +99,9 @@ const RoutineRenderUtils = (() => {
 
   function setupFilterEmpty(elements) {
     elements.emptyText.textContent = I18n.get("empty_state_text");
-    elements.emptyBtn.innerHTML = Icons.getIcon("brush-cleaning");
-    elements.emptyBtn.innerHTML += I18n.get("clear_filters_button");
+    elements.emptyBtn.innerHTML = `${Icons.getIcon("brush-cleaning")}${I18n.get(
+      "clear_filters_button"
+    )}`;
 
     elements.emptyBtn = removeListeners(elements.emptyBtn);
     elements.emptyBtn.addEventListener("click", RoutineFilter.resetFilters);
@@ -94,19 +109,16 @@ const RoutineRenderUtils = (() => {
 
   function setupRoutinesEmpty(elements) {
     elements.emptyText.textContent = I18n.get("empty_routines_text");
-    elements.emptyBtn.innerHTML = Icons.getIcon("calendar-plus");
-    elements.emptyBtn.innerHTML += I18n.get("create_routine_button");
+    elements.emptyBtn.innerHTML = `${Icons.getIcon("calendar-plus")}${I18n.get(
+      "create_routine_button"
+    )}`;
 
     elements.emptyBtn = removeListeners(elements.emptyBtn);
     elements.emptyBtn.addEventListener("click", () => RoutineModal.open());
   }
 
   function showEmpty(isFilter, elements) {
-    if (isFilter) {
-      setupFilterEmpty(elements);
-    } else {
-      setupRoutinesEmpty(elements);
-    }
+    isFilter ? setupFilterEmpty(elements) : setupRoutinesEmpty(elements);
     elements.emptyState.classList.add("show");
   }
 
@@ -203,12 +215,18 @@ const RoutineRenderer = (() => {
   }
 
   function updateNext() {
-    const timestamp = RoutineService.findNextTimestamp();
+    const routines = RoutineService.getAll();
+    const { timestamp, routinesModified, updatedRoutines } =
+      RoutineCalculator.findNext(routines);
+
+    if (routinesModified) {
+      RoutineService.setRoutines(updatedRoutines);
+    }
 
     if (timestamp) {
       const formatted = RoutineRenderUtils.formatDateTime(timestamp);
       RoutineRenderUtils.showNext(formatted, elements);
-      TimeService.setNext(timestamp);
+      TimeWatcher.setNext(timestamp);
     } else {
       RoutineRenderUtils.hideNext(elements);
     }
@@ -244,15 +262,22 @@ const RoutineRenderer = (() => {
   }
 
   function bindEvents() {
-    EventBus.on("routine:updated", update);
-    EventBus.on("routine:deleted", remove);
+    const eventMappings = [
+      ["routine:updated", update],
+      ["routine:deleted", remove]
+    ];
 
-    ["routine:added", "filter:changed"].forEach(event =>
-      EventBus.on(event, renderRoutines)
-    );
-    ["routine:added", "routine:updated", "routine:deleted"].forEach(event =>
-      EventBus.on(event, updateNext)
-    );
+    const renderEvents = ["routine:added", "filter:changed"];
+    const nextEvents = [
+      "routine:added",
+      "routine:updated",
+      "routine:deleted",
+      "routine:performed"
+    ];
+
+    eventMappings.forEach(([event, handler]) => EventBus.on(event, handler));
+    renderEvents.forEach(event => EventBus.on(event, renderRoutines));
+    nextEvents.forEach(event => EventBus.on(event, updateNext));
   }
 
   function init() {
@@ -262,7 +287,5 @@ const RoutineRenderer = (() => {
     bindEvents();
   }
 
-  return {
-    init
-  };
+  return { init };
 })();

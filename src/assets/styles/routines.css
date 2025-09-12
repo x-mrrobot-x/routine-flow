@@ -313,15 +313,50 @@
   padding: 0 var(--space-lg);
 }
 
-/* Form days */
+/* Frequency Buttons */
 
-.days-container {
+.frequency-buttons {
   display: flex;
+  gap: var(--space-sm);
+}
+
+.frequency-buttons .button {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.frequency-buttons .button.active {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--gradient-start-rgb), 0.1),
+    rgba(var(--gradient-end-rgb), 0.05)
+  );
+  border: 1px solid rgba(var(--gradient-start-rgb), 0.1);
+}
+
+.frequency-selection {
+  margin-top: var(--space-sm);
+}
+
+.weekdays-container,
+.specific-date-container {
+  display: none;
+}
+
+.weekdays-container.show,
+.specific-date-container.show {
+  display: flex;
+}
+
+/* WeekDays Container */
+
+.weekdays-container {
   flex-wrap: wrap;
   gap: var(--space-xs);
 }
 
-.day-button {
+.day-btn {
   font-size: var(--font-xs);
   color: var(--text-primary);
   padding: 0.6rem var(--space-sm);
@@ -330,13 +365,29 @@
   background: rgba(var(--bg-primary-rgb), 0.6);
 }
 
-.day-button:active {
+.day-btn:active {
   background: var(--bg-secondary);
 }
 
-.day-button.selected {
+.day-btn.selected {
   background-color: rgba(var(--gradient-start-rgb), 0.6);
   border-color: rgba(var(--gradient-start-rgb), 0.1);
+}
+
+/* Specific Date */
+
+.specific-date-input {
+  position: relative;
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs) var(--space-sm);
+  background-color: rgba(var(--bg-primary-rgb), .6);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 @media (min-width: 102.4rem) {

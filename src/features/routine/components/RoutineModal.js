@@ -2,14 +2,20 @@ const RoutineModalUtils = (() => {
   function setCreateState() {
     RoutineModal.setState({
       selectedDays: [],
+      specificDate: null,
+      frequencyType: "days",
       isEditMode: false,
       routineToEdit: null
     });
   }
 
   function setEditState(routine) {
+    const isSpecific = typeof routine.frequency === "string";
+
     RoutineModal.setState({
-      selectedDays: [...routine.frequency],
+      selectedDays: isSpecific ? [] : [...routine.frequency],
+      specificDate: isSpecific ? routine.frequency : null,
+      frequencyType: isSpecific ? "specific" : "days",
       isEditMode: true,
       routineToEdit: routine.id
     });
@@ -55,7 +61,9 @@ const RoutineModal = (() => {
 
   let state = {
     selectedDays: [],
+    specificDate: null,
     isEditMode: false,
+    frequencyType: "days",
     routineToEdit: null
   };
 
@@ -72,8 +80,7 @@ const RoutineModal = (() => {
   }
 
   function getContent(isEdit) {
-    const mode = isEdit ? "edit" : "create";
-    const config = CONTENT_KEYS[mode];
+    const config = CONTENT_KEYS[isEdit ? "edit" : "create"];
 
     return {
       title: I18n.get(config.title),
@@ -97,12 +104,7 @@ const RoutineModal = (() => {
   }
 
   function open(routine) {
-    if (routine) {
-      setupEdit(routine);
-    } else {
-      setupCreate();
-    }
-
+    routine ? setupEdit(routine) : setupCreate();
     Modal.show(elements.modal);
   }
 
