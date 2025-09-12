@@ -175,7 +175,11 @@ const RoutineForm = (() => {
     const { categoryId: oldCategoryId } = original;
     const { categoryId: newCategoryId } = data;
 
-    RoutineService.update(id, data);
+    const updatedData = {
+      ...data,
+      active: true
+    };
+    RoutineService.update(id, updatedData);
 
     const currentFilter = RoutineFilter.getState("currentCategoryFilter");
     if (currentFilter !== "all" && newCategoryId !== oldCategoryId) {

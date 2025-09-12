@@ -43,8 +43,19 @@ const RoutineFilterUtils = (() => {
       return handler ? handler(routine) : false;
     },
     priority: (routine, value) => value === "all" || routine.priority === value,
-    day: (routine, value) =>
-      value === "all" || routine.frequency.includes(parseInt(value)),
+    day: (routine, value) => {
+      if (value === "all") return true;
+
+      if (typeof routine.frequency === "string") {
+        return false;
+      }
+
+      if (Array.isArray(routine.frequency)) {
+        return routine.frequency.includes(parseInt(value));
+      }
+
+      return false;
+    },
     search: (routine, term) => {
       if (!term) return true;
       const text = `${routine.title.toLowerCase()} ${routine.description.toLowerCase()}`;
