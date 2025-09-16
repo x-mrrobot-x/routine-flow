@@ -7,7 +7,6 @@ const RoutineFormUtils = (() => {
     "time-error",
     "frequency-error"
   ];
-
   const REQUIRED_FIELDS = {
     title: "form_error_title_required",
     description: "form_error_description_required",
@@ -22,7 +21,7 @@ const RoutineFormUtils = (() => {
     return {
       title: getValue(elements.titleInput),
       description: getValue(elements.descriptionInput),
-      command: getValue(elements.commandInput),
+      commands: RoutineModal.getState("commands"),
       categoryId: getValue(elements.categorySelect),
       priority: getValue(elements.prioritySelect),
       time: Utils.timeToSeconds(getValue(elements.timeInput)),
@@ -44,13 +43,6 @@ const RoutineFormUtils = (() => {
     }
   }
 
-  function validateCommand(command, errors) {
-    if (command && !command.startsWith("/")) {
-      showError("command-error", I18n.get("form_error_command_invalid"));
-      errors.push("command");
-    }
-  }
-
   function validateFrequency(data, errors) {
     const { frequencyType, selectedDays, specificDate } = data;
 
@@ -68,7 +60,6 @@ const RoutineFormUtils = (() => {
 
     validateField("title", data.title, errors);
     validateField("description", data.description, errors);
-    validateCommand(data.command, errors);
     validateField("time", data.time, errors);
     validateFrequency(data, errors);
 
@@ -84,7 +75,7 @@ const RoutineFormUtils = (() => {
     return {
       title: data.title,
       description: data.description,
-      command: data.command,
+      commands: data.commands,
       priority: data.priority,
       time: data.time,
       frequency,
@@ -96,7 +87,6 @@ const RoutineFormUtils = (() => {
     const mappings = [
       [elements.titleInput, routine.title],
       [elements.descriptionInput, routine.description],
-      [elements.commandInput, routine.command],
       [elements.categorySelect, routine.categoryId],
       [elements.prioritySelect, routine.priority],
       [elements.timeInput, Utils.secondsToTime(routine.time)]
@@ -112,15 +102,15 @@ const RoutineFormUtils = (() => {
     });
   }
 
-  function updateFrequencyDisplay(frequencyType, elements) {
-    const isDaily = frequencyType === "days";
+  function updateFrequencyDisplay(type, elements) {
+    const isDaily = type === "days";
 
     elements.weekdaysContainer.style.display = isDaily ? "flex" : "none";
     elements.specificDateContainer.style.display = isDaily ? "none" : "block";
 
-    elements.frequencyBtns.forEach(btn => {
-      btn.classList.toggle("active", frequencyType === btn.dataset.type);
-    });
+    elements.frequencyBtns.forEach(btn =>
+      btn.classList.toggle("active", type === btn.dataset.type)
+    );
   }
 
   function clearErrors() {
@@ -175,11 +165,7 @@ const RoutineForm = (() => {
     const { categoryId: oldCategoryId } = original;
     const { categoryId: newCategoryId } = data;
 
-    const updatedData = {
-      ...data,
-      active: true
-    };
-    RoutineService.update(id, updatedData);
+    RoutineService.update(id, { ...data, active: true });
 
     const currentFilter = RoutineFilter.getState("currentCategoryFilter");
     if (currentFilter !== "all" && newCategoryId !== oldCategoryId) {
@@ -200,22 +186,9 @@ const RoutineForm = (() => {
     Toast.show("success", "toast_routine_created");
   }
 
-  function handleCommandInput(event) {
-    const { value } = event.target;
-    const visible = CommandDropdown.getVisibleDropdown();
-
-    if (value.startsWith("/")) {
-      const suggestions = CommandUtils.filterSuggestions(value);
-      return suggestions.length > 0
-        ? CommandDropdown.open(suggestions)
-        : CommandDropdown.close();
-    }
-
-    if (visible) CommandDropdown.close();
-  }
-
   function setupEdit(routine) {
     RoutineFormUtils.populateFields(routine, elements);
+    updateCommandDisplay();
 
     const frequencyType = RoutineModal.getState("frequencyType");
     RoutineFormUtils.updateFrequencyDisplay(frequencyType, elements);
@@ -230,6 +203,14 @@ const RoutineForm = (() => {
     RoutineFormUtils.focusTitle(elements.titleInput);
   }
 
+  function updateCommandDisplay() {
+    const currentCommands = RoutineModal.getState("commands");
+    elements.commandInput.value =
+      currentCommands.length === 0
+        ? ""
+        : `${currentCommands.length} ${I18n.get("form_selected_commands")}`;
+  }
+
   function updateDays(day, selected) {
     const days = RoutineModal.getState("selectedDays");
     const newDays = selected ? [...days, day] : days.filter(d => d !== day);
@@ -240,7 +221,8 @@ const RoutineForm = (() => {
     elements.form.reset();
     RoutineFormUtils.clearErrors();
     RoutineFormUtils.resetDays(elements.dayBtns);
-
+    updateCommandDisplay();
+    
     RoutineModal.setState("frequencyType", "days");
     RoutineFormUtils.updateFrequencyDisplay("days", elements);
     elements.specificDateInput.value = "";
@@ -265,11 +247,6 @@ const RoutineForm = (() => {
     RoutineModal.close();
   }
 
-  function setCommandInput(command) {
-    elements.commandInput.value = command;
-    elements.commandInput.focus();
-  }
-
   function toggleDay(e) {
     const day = parseInt(e.target.dataset.day);
     if (isNaN(day)) return;
@@ -286,8 +263,12 @@ const RoutineForm = (() => {
     RoutineFormUtils.updateFrequencyDisplay(type, elements);
   }
 
-  function handleSpecificDateInput(e) {
+  function handleDateInput(e) {
     RoutineModal.setState("specificDate", e.target.value);
+  }
+
+  function handleCommandClick() {
+    CommandPickerModal.open();
   }
 
   function populateCategorySelect() {
@@ -306,18 +287,18 @@ const RoutineForm = (() => {
 
   const handlers = {
     submit: handleSubmit,
-    input: handleCommandInput,
+    commandClick: handleCommandClick,
     frequency: setFrequencyType,
-    toggle: toggleDay,
-    dateInput: handleSpecificDateInput
+    toggleDay: toggleDay,
+    dateInput: handleDateInput
   };
 
   function bindEvents() {
     const bindings = [
       [elements.form, "submit", handlers.submit],
-      [elements.commandInput, "input", handlers.input],
+      [elements.commandInput, "click", handlers.commandClick],
       [elements.frequencyButtons, "click", handlers.frequency],
-      [elements.weekdaysContainer, "click", handlers.toggle],
+      [elements.weekdaysContainer, "click", handlers.toggleDay],
       [elements.specificDateInput, "input", handlers.dateInput]
     ];
 
@@ -328,9 +309,13 @@ const RoutineForm = (() => {
     EventBus.on("data:category:changed", populateCategorySelect);
   }
 
+  function render() {
+    populateCategorySelect();
+  }
+
   function init() {
     CommandDropdown.init();
-    populateCategorySelect();
+    render();
     bindEvents();
   }
 
@@ -338,6 +323,6 @@ const RoutineForm = (() => {
     init,
     setupEdit,
     setupCreate,
-    setCommandInput
+    updateCommandDisplay
   };
 })();

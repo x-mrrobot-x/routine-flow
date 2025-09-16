@@ -2,6 +2,7 @@ const RoutineModalUtils = (() => {
   function setCreateState() {
     RoutineModal.setState({
       selectedDays: [],
+      commands: [],
       specificDate: null,
       frequencyType: "days",
       isEditMode: false,
@@ -14,6 +15,7 @@ const RoutineModalUtils = (() => {
 
     RoutineModal.setState({
       selectedDays: isSpecific ? [] : [...routine.frequency],
+      commands: [...routine.commands],
       specificDate: isSpecific ? routine.frequency : null,
       frequencyType: isSpecific ? "specific" : "days",
       isEditMode: true,
@@ -61,6 +63,7 @@ const RoutineModal = (() => {
 
   let state = {
     selectedDays: [],
+    commands: [],
     specificDate: null,
     isEditMode: false,
     frequencyType: "days",

@@ -119,7 +119,7 @@ const CommandDropdown = (() => {
       return;
     }
 
-    RoutineForm.setCommandInput(`${baseCommand} `);
+    CommandPickerModal.setCommandInput(`${baseCommand} `);
     close();
   }
 

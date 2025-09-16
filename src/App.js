@@ -16,6 +16,7 @@ const App = (() => {
     DeleteRoutineModal.init();
     TaskPickerModal.init();
     AppPickerModal.init();
+    CommandPickerModal.init();
   }
 
   function goBack() {

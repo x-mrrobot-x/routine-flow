@@ -38,7 +38,7 @@ const TaskPickerModal = (() => {
     const card = e.target.closest(".task-card");
     if (!card) return;
 
-    RoutineForm.setCommandInput(`${selectedCommand} ${card.dataset.task}`);
+    CommandPickerModal.setCommandInput(`${selectedCommand} ${card.dataset.task}`);
     close();
   }
 

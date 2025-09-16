@@ -30,39 +30,39 @@ const RoutineFilterUtils = (() => {
     commandFilter: "all"
   };
 
-  const STATUS_MAP = {
-    active: r => r.active,
-    inactive: r => !r.active,
-    pending: r => r.status === "pending"
-  };
-
   const FILTER_STRATEGIES = {
     status: (routine, value) => {
-      if (value === "all") return true;
-      const handler = STATUS_MAP[value];
-      return handler ? handler(routine) : false;
+      return value === "all" || routine.active == JSON.parse(value);
     },
-    priority: (routine, value) => value === "all" || routine.priority === value,
+    priority: (routine, value) => {
+      return value === "all" || routine.priority === value;
+    },
     day: (routine, value) => {
       if (value === "all") return true;
-
-      if (typeof routine.frequency === "string") {
-        return false;
-      }
+      const day = parseInt(value);
 
       if (Array.isArray(routine.frequency)) {
-        return routine.frequency.includes(parseInt(value));
+        return routine.frequency.includes(day);
+      }
+
+      if (typeof routine.frequency === "string") {
+        const date = new Date(routine.frequency + "T00:00:00");
+        return date.getDay() === day;
       }
 
       return false;
     },
-    search: (routine, term) => {
-      if (!term) return true;
-      const text = `${routine.title.toLowerCase()} ${routine.description.toLowerCase()}`;
+    search: (routine, value) => {
+      if (!value) return true;
+      const term = value.toLowerCase();
+      const text = `${routine.title} ${routine.description}`.toLowerCase();
       return text.includes(term);
     },
-    command: (routine, value) =>
-      value === "all" || routine.command.startsWith(value),
+    command: (routine, value) => {
+      if (value === "all") return true;
+      if (!routine.commands || routine.commands.length === 0) return false;
+      return routine.commands.some(command => command.startsWith(value));
+    },
     category: (routine, value) =>
       value === "all" || routine.categoryId === value
   };
@@ -147,21 +147,29 @@ const RoutineFilterUtils = (() => {
 
   function getBaseCommands(routines) {
     return routines.reduce((acc, routine) => {
-      const baseCommand = routine.command.split(" ")[0];
-      if (!acc.includes(baseCommand)) {
-        acc.push(baseCommand);
+      if (routine.commands && routine.commands.length > 0) {
+        routine.commands.forEach(command => {
+          const baseCommand = command.split(" ")[0];
+          if (!acc.includes(baseCommand)) {
+            acc.push(baseCommand);
+          }
+        });
       }
       return acc;
     }, []);
   }
 
-  function populateCommandFilter(elements) {
+  function populateCommandsFilter(elements) {
     const routines = RoutineService.getAll();
     const commands = getBaseCommands(routines);
 
+    let parent = elements.commandFilter;
+    while (parent.children.length > 1) {
+      parent.removeChild(parent.lastChild);
+    }
     commands.forEach(command => {
       const option = createOption(command);
-      elements.commandFilter.appendChild(option);
+      parent.appendChild(option);
     });
   }
 
@@ -174,7 +182,7 @@ const RoutineFilterUtils = (() => {
     sortByTime,
     getValues,
     applyFilters,
-    populateCommandFilter
+    populateCommandsFilter
   };
 })();
 
@@ -275,10 +283,16 @@ const RoutineFilter = (() => {
     events.forEach(([el, event, handler]) =>
       el.addEventListener(event, handler)
     );
+
+    ["routine:added", "routine:updated", "routine:deleted"].forEach(event =>
+      EventBus.on(event, () =>
+        RoutineFilterUtils.populateCommandsFilter(elements)
+      )
+    );
   }
 
   function init() {
-    RoutineFilterUtils.populateCommandFilter(elements);
+    RoutineFilterUtils.populateCommandsFilter(elements);
     bindEvents();
   }
 

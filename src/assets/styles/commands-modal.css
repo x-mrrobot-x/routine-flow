@@ -1,0 +1,58 @@
+#commands-modal .form-input {
+  border-radius: var(--radius-sm);
+  margin-right: var(--space-xs);
+}
+
+#commands-modal .modal-content {
+  height: 80%;
+}
+
+#commands-modal .form-group {
+  flex-direction: row;
+  align-items: center;
+  border: 1px dashed var(--border);
+  padding: var(--space-sm) var(--space-md);
+  padding-bottom: 2rem;
+  border-radius: var(--radius-md);
+}
+
+#commands-modal .form-label {
+  padding: 0 var(--space-xxs);
+}
+
+.commands-list {
+  flex: 1;
+  margin-top: var(--space-xl);
+  overflow-y: auto;
+}
+
+.command-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-xs) var(--space-md);
+  padding-right: var(--space-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-xs);
+  background-color: rgba(var(--bg-secondary-rgb), 0.6);
+}
+
+.command-text {
+  flex: 1;
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.command-item .delete-btn {
+  margin-left: var(--space-sm);
+  background: transparent;
+}
+
+.empty-commands {
+  text-align: center;
+  padding: var(--space-md);
+  color: var(--text-muted);
+  font-style: italic;
+}

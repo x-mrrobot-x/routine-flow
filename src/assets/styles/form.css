@@ -53,6 +53,10 @@
     box-shadow 0.2s;
 }
 
+.form-input:read-only {
+  background: transparent;
+}
+
 .form-textarea {
   min-height: 8rem;
   resize: none;

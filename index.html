@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Routine Flow - Gerenciador de Rotinas</title>
-    
+
     <!-- Styles -->
     <link rel="stylesheet" href="src/assets/styles/variables.css" />
     <link rel="stylesheet" href="src/assets/styles/reset.css" />
@@ -21,7 +21,8 @@
     <link rel="stylesheet" href="src/assets/styles/modal.css" />
     <link rel="stylesheet" href="src/assets/styles/categories.css" />
     <link rel="stylesheet" href="src/assets/styles/routines.css" />
-    <link rel="stylesheet" href="src/assets/styles/commands.css" />
+    <link rel="stylesheet" href="src/assets/styles/command-dropdown.css" />
+    <link rel="stylesheet" href="src/assets/styles/commands-modal.css" />
     <link rel="stylesheet" href="src/assets/styles/app-picker.css" />
     <link rel="stylesheet" href="src/assets/styles/task-picker.css" />
     <link rel="stylesheet" href="src/assets/styles/settings.css" />
@@ -64,7 +65,7 @@
     ></script>
     <script src="src/features/routine/services/RoutineFilter.js" defer></script>
     <script
-      src="src/features/routine/components/CommandDropdown.js"
+      src="src/features/commands/components/CommandDropdown.js"
       defer
     ></script>
     <script
@@ -91,6 +92,10 @@
     ></script>
     <script
       src="src/features/routine/components/AppPickerModal.js"
+      defer
+    ></script>
+    <script
+      src="src/features/commands/components/CommandPickerModal.js"
       defer
     ></script>
     <script
@@ -148,10 +153,8 @@
               <div class="select-wrapper">
                 <select id="status-filter" class="select">
                   <option value="all" data-i18n="status_all">Todas</option>
-                  <option value="active" data-i18n="status_active">
-                    Ativas
-                  </option>
-                  <option value="inactive" data-i18n="status_inactive">
+                  <option value="true" data-i18n="status_active">Ativas</option>
+                  <option value="false" data-i18n="status_inactive">
                     Inativas
                   </option>
                 </select>
@@ -320,7 +323,7 @@
                 id="save-category"
               >
                 <i data-icon="plus"></i>
-                <span data-i18n="category_add_button">Adicionar</span>
+                <span data-i18n="add_button">Adicionar</span>
               </button>
             </div>
           </form>
@@ -465,20 +468,19 @@
               </div>
 
               <div class="form-group">
-                <div id="command-dropdown" class="command-dropdown"></div>
-
                 <label
                   for="command"
                   class="form-label"
-                  data-i18n="form_label_command"
-                  >Comando (opcional)</label
+                  data-i18n="form_label_commands"
+                  >Comandos (opcional)</label
                 >
                 <input
                   id="command"
                   name="command"
                   type="text"
                   class="form-input"
-                  placeholder="Digite / para ver comandos disponíveis"
+                  readonly="true"
+                  placeholder="Clique para selecionar comandos"
                   data-i18n="form_placeholder_command"
                 />
                 <div class="form-error" id="command-error"></div>
@@ -677,6 +679,80 @@
           <button type="button" class="button delete-btn" id="confirm-delete">
             <i data-icon="trash2"></i>
             <span data-i18n="delete_button">Excluir</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Commands Modal -->
+    <div id="commands-modal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <header class="modal-header">
+          <h2
+            class="modal-title text-gradient"
+            data-i18n="commands_modal_title"
+          >
+            Comandos da Rotina
+          </h2>
+
+          <p class="modal-description" data-i18n="commands_modal_description">
+            Defina os comandos que serão executados quando esta rotina for acionada.
+          </p>
+
+          <button type="button" id="commands-modal-close" class="modal-close">
+            <i data-icon="x"></i>
+          </button>
+        </header>
+
+        <section class="modal-body">
+          <fieldset class="form-group">
+            <legend
+              for="new-command-input"
+              class="form-label"
+              data-i18n="form_label_new_command"
+            >
+              Comando
+            </legend>
+
+            <input
+              id="new-command-input"
+              type="text"
+              class="form-input"
+              placeholder="Digite / para ver comandos disponíveis"
+              data-i18n="form_placeholder_new_command"
+            />
+
+            <button
+              type="button"
+              id="add-command-btn"
+              class="button button-primary"
+            >
+              <i data-icon="plus"></i>
+            </button>
+          </fieldset>
+
+          <div id="command-dropdown" class="command-dropdown"></div>
+
+          <div class="commands-list" id="commands-list"></div>
+        </section>
+
+        <footer class="modal-actions">
+          <button
+            type="button"
+            class="button button-outline"
+            id="cancel-commands"
+          >
+            <i data-icon="x"></i>
+            <span data-i18n="cancel_button">Cancelar</span>
+          </button>
+          <button
+            type="button"
+            id="save-commands"
+            class="button button-primary"
+          >
+            <i data-icon="check"></i>
+            <span data-i18n="save_button">Salvar</span>
           </button>
         </footer>
       </div>

@@ -36,7 +36,7 @@ const AppPickerModal = (() => {
     const card = e.target.closest(".app-card");
     if (!card) return;
 
-    RoutineForm.setCommandInput(`${selectedCommand} ${card.dataset.app}`);
+    CommandPickerModal.setCommandInput(`${selectedCommand} ${card.dataset.app}`);
     close();
   }
 

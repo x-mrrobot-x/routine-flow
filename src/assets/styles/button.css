@@ -36,7 +36,7 @@
 }
 
 .delete-btn:active {
-  background-color: rgba(var(--danger-dark-rgb), 0.3);
+  background-color: rgba(var(--danger-dark-rgb), 0.3) !important;
 }
 
 .routine-add-button {

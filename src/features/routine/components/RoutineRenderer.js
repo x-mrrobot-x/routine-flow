@@ -36,13 +36,20 @@ const RoutineRenderUtils = (() => {
     return "";
   }
 
-  function createCommand(command) {
-    return command
-      ? `<div class="card-command">
+  function createCommands(commands) {
+    if (commands.length === 0) return "";
+    
+    if (commands.length === 1) {
+      return `<div class="card-command">
         ${Icons.getIcon("terminal")}
-        <code>${command}</code>
-      </div>`
-      : "";
+        <code>${commands[0]}</code>
+      </div>`;
+    }
+    
+    return `<div class="card-command">
+      ${Icons.getIcon("terminal")}
+      <code>${commands.length} comando(s)</code>
+    </div>`;
   }
 
   function createCardHTML(routine) {
@@ -62,7 +69,7 @@ const RoutineRenderUtils = (() => {
           <span>${Utils.secondsToTime(routine.time)}</span>
         </time>
         
-        ${createCommand(routine.command)}
+        ${createCommands(routine.commands)}
         
         <div class="card-days">
           ${Icons.getIcon("calendar")}
