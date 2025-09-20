@@ -52,6 +52,7 @@ const Icons = (() => {
     "settings-2":
       '<path d="M14 17H5"/><path d="M19 7h-9"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/>',
     "chevron-down": '<polyline points="6,9 12,15 18,9"/>',
+    "chevron-right": '<path d="m9 18 6-6-6-6"/>',
     filter: '<polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/>',
     search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>',
     "brush-cleaning":

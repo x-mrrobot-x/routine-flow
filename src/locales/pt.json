@@ -80,6 +80,7 @@
   "setting_toast_label": "Exibir toast na tela",
   "setting_vibrate_label": "Vibrar dispositivo",
   "next_routine_title": "Próxima Rotina",
+  "next_routine_footer": "Toque para ver todas as rotinas do dia",
   "task_picker_modal_title": "Selecionar Tarefa",
   "task_picker_modal_description": "Escolha a tarefa para o comando.",
   "search_task_placeholder": "Buscar tarefas...",
@@ -112,5 +113,8 @@
   "category_form_label_name": "Nome da Categoria",
   "category_form_placeholder_name": "Ex: Trabalho, Saúde, Estudos...",
   "category_form_label_color": "Cor da Categoria",
-  "my_categories": "Minhas categorias"
+  "my_categories": "Minhas categorias",
+  "timeline_modal_title": "Rotinas do Dia",
+  "timeline_modal_description": "Linha do tempo das rotinas agendadas para hoje",
+  "timeline_empty_text": "Nenhuma rotina agendada para hoje"
 }

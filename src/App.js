@@ -17,6 +17,7 @@ const App = (() => {
     TaskPickerModal.init();
     AppPickerModal.init();
     CommandPickerModal.init();
+    TimelineModal.init();
   }
 
   function goBack() {

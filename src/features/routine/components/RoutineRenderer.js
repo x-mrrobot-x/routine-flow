@@ -38,14 +38,14 @@ const RoutineRenderUtils = (() => {
 
   function createCommands(commands) {
     if (commands.length === 0) return "";
-    
+
     if (commands.length === 1) {
       return `<div class="card-command">
         ${Icons.getIcon("terminal")}
         <code>${commands[0]}</code>
       </div>`;
     }
-    
+
     return `<div class="card-command">
       ${Icons.getIcon("terminal")}
       <code>${commands.length} comando(s)</code>
@@ -152,15 +152,16 @@ const RoutineRenderUtils = (() => {
   }
 
   function showNext(formatted, elements) {
-    elements.nextText.textContent = formatted;
-    elements.nextContainer.style.display = "block";
+    elements.nextTime.textContent = formatted;
+    elements.nextRoutine.style.display = "block";
   }
 
   function hideNext(elements) {
-    elements.nextContainer.style.display = "none";
+    elements.nextRoutine.style.display = "none";
   }
 
   return {
+    getPriorityConfig,
     createCardHTML,
     createDayTags,
     createActionBtn,
@@ -183,8 +184,8 @@ const RoutineRenderer = (() => {
     emptyState: DOM.$("#empty-state"),
     emptyText: DOM.$("#empty-state p"),
     emptyBtn: DOM.$("#empty-state button"),
-    nextContainer: DOM.$("#next-routine"),
-    nextText: DOM.$("#next-routine-text"),
+    nextRoutine: DOM.$("#next-routine"),
+    nextTime: DOM.$("#next-routine-time"),
     appContainer: DOM.$("#app-container")
   };
 
@@ -275,6 +276,7 @@ const RoutineRenderer = (() => {
     ];
 
     const renderEvents = ["routine:added", "filter:changed"];
+
     const nextEvents = [
       "routine:added",
       "routine:updated",
@@ -285,6 +287,8 @@ const RoutineRenderer = (() => {
     eventMappings.forEach(([event, handler]) => EventBus.on(event, handler));
     renderEvents.forEach(event => EventBus.on(event, renderRoutines));
     nextEvents.forEach(event => EventBus.on(event, updateNext));
+
+    elements.nextRoutine.addEventListener("click", TimelineModal.open);
   }
 
   function init() {
@@ -294,5 +298,8 @@ const RoutineRenderer = (() => {
     bindEvents();
   }
 
-  return { init };
+  return {
+    init,
+    getPriorityConfig: RoutineRenderUtils.getPriorityConfig
+  };
 })();

@@ -80,6 +80,7 @@
   "setting_toast_label": "Show toast on screen",
   "setting_vibrate_label": "Vibrate device",
   "next_routine_title": "Next Routine",
+  "next_routine_footer": "Tap to see all routines for the day",
   "task_picker_modal_title": "Select Task",
   "task_picker_modal_description": "Choose the task for the command.",
   "search_task_placeholder": "Search tasks...",
@@ -112,5 +113,8 @@
   "category_form_label_name": "Category Name",
   "category_form_placeholder_name": "E.g.: Work, Health, Studies...",
   "category_form_label_color": "Category Color",
-  "my_categories": "My categories"
+  "my_categories": "My categories",
+  "timeline_modal_title": "Today's Routines",
+  "timeline_modal_description": "Timeline of routines scheduled for today",
+  "timeline_empty_text": "No routines scheduled for today"
 }

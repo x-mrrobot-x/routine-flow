@@ -20,12 +20,15 @@
     <link rel="stylesheet" href="src/assets/styles/main.css" />
     <link rel="stylesheet" href="src/assets/styles/modal.css" />
     <link rel="stylesheet" href="src/assets/styles/categories.css" />
+    <link rel="stylesheet" href="src/assets/styles/next-routine.css" />
     <link rel="stylesheet" href="src/assets/styles/routines.css" />
+    <link rel="stylesheet" href="src/assets/styles/routines-modal.css" />
     <link rel="stylesheet" href="src/assets/styles/command-dropdown.css" />
     <link rel="stylesheet" href="src/assets/styles/commands-modal.css" />
     <link rel="stylesheet" href="src/assets/styles/app-picker.css" />
     <link rel="stylesheet" href="src/assets/styles/task-picker.css" />
     <link rel="stylesheet" href="src/assets/styles/settings.css" />
+    <link rel="stylesheet" href="src/assets/styles/timeline.css" />
     <link rel="stylesheet" href="src/assets/styles/toast.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
@@ -104,6 +107,10 @@
     ></script>
     <script src="src/features/settings/SettingsService.js" defer></script>
     <script src="src/features/settings/SettingsModal.js" defer></script>
+    <script
+      src="src/features/routine/components/TimelineModal.js"
+      defer
+    ></script>
 
     <script src="src/services/EventBus.js" defer></script>
     <script src="src/App.js" defer></script>
@@ -208,16 +215,27 @@
           </div>
         </div>
 
-        <aside class="next-routine" id="next-routine">
-          <h2 class="next-routine-title" data-i18n="next_routine_title">
-            Próxima Rotina
-          </h2>
+        <section class="next-routine" id="next-routine">
+          <header class="next-routine-title">
+            <h3 data-i18n="next_routine_title">Próxima Rotina</h3>
+            <i data-icon="chevron-right"></i>
+          </header>
 
           <div class="next-routine-info">
             <i data-icon="clock"></i>
-            <time id="next-routine-text"></time>
+            <time
+              class="next-routine-time text-gradient"
+              id="next-routine-time"
+            ></time>
           </div>
-        </aside>
+
+          <footer class="next-routine-footer">
+            <span data-i18n="next_routine_footer"
+              >Toque para ver todas as rotinas do dia</span
+            >
+            <i data-icon="calendar"></i>
+          </footer>
+        </section>
 
         <!-- Categories Nav -->
         <nav class="categories-nav">
@@ -252,6 +270,31 @@
       >
         <i data-icon="calendar-plus"></i>
       </button>
+    </div>
+
+    <!-- Timeline Modal -->
+    <div id="timeline-modal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <header class="modal-header">
+          <h2
+            class="modal-title text-gradient"
+            data-i18n="timeline_modal_title"
+          >
+            Rotinas do Dia
+          </h2>
+          <p class="modal-description" data-i18n="timeline_modal_description">
+            Linha do tempo das rotinas agendadas para hoje
+          </p>
+          <button type="button" id="timeline-modal-close" class="modal-close">
+            <i data-icon="x"></i>
+          </button>
+        </header>
+
+        <section class="modal-body">
+          <div class="timeline-container" id="timeline-container"></div>
+        </section>
+      </div>
     </div>
 
     <!-- Category Modal -->
@@ -697,7 +740,8 @@
           </h2>
 
           <p class="modal-description" data-i18n="commands_modal_description">
-            Defina os comandos que serão executados quando esta rotina for acionada.
+            Defina os comandos que serão executados quando esta rotina for
+            acionada.
           </p>
 
           <button type="button" id="commands-modal-close" class="modal-close">

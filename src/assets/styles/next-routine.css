@@ -1,0 +1,108 @@
+.next-routine {
+  position: relative;
+  display: none;
+  border: 1px solid rgba(var(--gradient-start-rgb), 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-top: var(--space-lg);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--gradient-start-rgb), 0.08),
+    rgba(var(--gradient-end-rgb), 0.01)
+  );
+  box-shadow: 0 0.2rem 0.4rem rgba(var(--black-rgb), 0.1);
+  transition: all 0.3s ease;
+  animation: fade-in 0.5s ease-out;
+  overflow: hidden;
+}
+
+.next-routine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.3rem;
+  background: linear-gradient(
+    to right,
+    rgb(var(--gradient-start-rgb)),
+    rgb(var(--gradient-end-rgb))
+  );
+}
+
+.next-routine-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.next-routine-title h3 {
+  font-size: var(--font-md);
+  color: var(--text-secondary);
+}
+
+.next-routine-title svg {
+  width: var(--icon-md);
+  height: var(--icon-md);
+}
+
+.next-routine-info {
+  display: flex;
+  align-items: center;
+  margin-top: var(--space-sm);
+}
+
+.next-routine-info svg {
+  color: rgb(var(--gradient-start-rgb));
+  width: var(--icon-md);
+  height: var(--icon-md);
+  margin-right: var(--space-xs);
+}
+
+.next-routine-time {
+  font-size: var(--font-lg);
+  font-weight: 600;
+}
+
+.next-routine-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: var(--text-muted);
+  margin-top: var(--space-sm);
+}
+
+.next-routine-footer span {
+  font-size: var(--font-xs);
+}
+
+.next-routine-footer svg {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  margin-left: var(--space-xs);
+}
+
+.next-routine:active {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--gradient-start-rgb), 0.15),
+    rgba(var(--gradient-end-rgb), 0.05)
+  );
+  transform: scale(0.98);
+  box-shadow: 0 0.1rem 0.2rem rgba(var(--black-rgb), 0.05);
+}
+
+.next-routine:active .next-routine-title svg {
+  transform: translateX(0.4rem);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
