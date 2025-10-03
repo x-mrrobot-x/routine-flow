@@ -1,19 +1,19 @@
-#commands-modal .form-input {
-  border-radius: var(--radius-sm);
-  margin-right: var(--space-xs);
+#commands-modal .modal-body {
+  padding: 0;
 }
 
-#commands-modal .modal-content {
-  height: 80%;
+#commands-modal .form-input {
+  margin-right: var(--space-xs);
 }
 
 #commands-modal .form-group {
   flex-direction: row;
   align-items: center;
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--border-input);
   padding: var(--space-sm) var(--space-md);
   padding-bottom: 2rem;
   border-radius: var(--radius-md);
+  margin: 0 var(--space-lg);
 }
 
 #commands-modal .form-label {
@@ -23,6 +23,7 @@
 .commands-list {
   flex: 1;
   margin-top: var(--space-xl);
+  padding: 0 var(--space-lg);
   overflow-y: auto;
 }
 
@@ -35,7 +36,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-xs);
-  background-color: rgba(var(--bg-secondary-rgb), 0.6);
+  background: var(--bg-secondary);
 }
 
 .command-text {

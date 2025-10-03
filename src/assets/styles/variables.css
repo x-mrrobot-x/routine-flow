@@ -1,21 +1,12 @@
 :root {
-  --text-primary: #f8fafc;
-  --text-secondary: #c3cad6;
-  --text-muted: #8d96a7;
-
   --bg-primary: #0e141b;
-  --bg-secondary: #141c24;
   --bg-button-hover: #181f29;
+  
+  --border: rgba(var(--gradient-start-rgb), 0.1);
+  --border-hover: #38bdf8;
 
-  --border: #1e2736;
-  --input: #1e2736;
-  --ring: #38bdf8;
-
-  --danger-light: #fca5a5;
   --danger-medium: #f87171;
   --danger-dark: #b91c1c;
-  --warning-light: #fde047;
-  --success-light: #86efac;
   --success-medium: #4ade80;
 
   --bg-primary-rgb: 14, 20, 27;
@@ -29,10 +20,6 @@
   --success-dark-rgb: 34, 197, 94;
   --black-rgb: 0, 0, 0;
 
-  --timeline-past-rgb: 30, 41, 59;
-  --timeline-current-rgb: 16, 185, 129;
-  --timeline-upcoming-rgb: 59, 130, 246;
-
   --icon-xs: 1.2rem;
   --icon-sm: 1.4rem;
   --icon-md: 1.6rem;
@@ -40,6 +27,7 @@
   --icon-xl: 2.4rem;
   --icon-2xl: 3.2rem;
 
+  --radius-xs: 0.6rem;
   --radius-sm: 0.8rem;
   --radius-md: 1.2rem;
   --radius-lg: 1.4rem;
@@ -59,4 +47,52 @@
   --font-md: 1.6rem;
   --font-lg: 1.8rem;
   --font-xl: 2rem;
+
+  --lh-tight: 1.08;
+  --lh-md: 1.4;
+  --lh-loose: 1.6;
+}
+
+html[data-theme='dark'] {
+  --text-primary: #f8fafc;
+  --text-secondary: #c3cada;
+  --text-muted: #8d96a7;
+
+  --border: rgba(var(--gradient-start-rgb), 0.05);
+  --border-input: rgba(var(--gradient-start-rgb), 0.15);
+
+  --bg-secondary: #141c24;
+  --bg-tertiary: #1c2530;
+  --bg-header: rgba(var(--bg-primary-rgb), 0.5);
+  --bg-modal: linear-gradient(
+    145deg,
+    rgba(var(--bg-secondary-rgb), 0.85),
+    rgba(var(--bg-primary-rgb), 0.8)
+  );
+}
+
+html[data-theme='light'] {
+  --text-primary: rgba(210, 230, 255, 0.95);
+  --text-secondary: rgba(210, 230, 255, 0.75);
+  --text-muted: rgba(210, 230, 255, 0.55);
+
+  --border: rgba(var(--gradient-start-rgb), 0.10);
+  --border-input: rgba(var(--gradient-start-rgb), 0.15);
+
+  --bg-secondary: linear-gradient(
+    135deg,
+    rgba(var(--gradient-start-rgb), 0.08),
+    rgba(var(--gradient-end-rgb), 0.01)
+  );
+  --bg-tertiary: rgba(var(--gradient-start-rgb), 0.08);
+  --bg-header: linear-gradient(
+    135deg,
+    rgba(var(--gradient-start-rgb), 0.06),
+    rgba(var(--gradient-end-rgb), 0.01)
+  );
+  --bg-modal: linear-gradient(
+    135deg,
+    rgba(var(--gradient-start-rgb), 0.1),
+    rgba(var(--gradient-end-rgb), 0.01)
+  );
 }

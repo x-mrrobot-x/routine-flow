@@ -1,3 +1,12 @@
+#app-picker-modal .modal-content,
+#task-picker-modal .modal-content {
+  height: 90%;
+}
+
+#commands-modal .modal-content {
+  height: 80%;
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -20,12 +29,9 @@
 
 .modal-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(var(--black-rgb), 0.4);
-  backdrop-filter: blur(0.6rem);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(0.5rem);
 }
 
 .modal-content {
@@ -35,21 +41,23 @@
   width: 90%;
   max-width: 50rem;
   max-height: 90%;
-  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: var(--space-lg) 0;
-  background: linear-gradient(
-    145deg,
-    rgba(var(--bg-secondary-rgb), 0.85),
-    rgba(var(--bg-primary-rgb), 0.8)
-  );
-  backdrop-filter: blur(1rem);
-  box-shadow:
-    0 1rem 2.5rem -0.5rem rgba(var(--black-rgb), 0.3),
-    0 0.8rem 1rem -0.6rem rgba(var(--black-rgb), 0.2);
+  background: var(--bg-modal);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(2rem);
+  box-shadow: rgba(var(--black-rgb), 0.2) 0 0.4rem 0.8rem 0.2rem;
   transform: scale(0.95);
   transition: transform 0.2s;
   overflow: hidden;
+}
+
+[data-theme="light"] .modal-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, hsla(240, 30%, 12%, 0.2) 100%);
+  z-index: -1;
 }
 
 .modal.show .modal-content {
@@ -107,7 +115,7 @@
   display: flex;
   flex-direction: column;
   padding: 0 var(--space-lg);
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 /* Modal actions */
@@ -122,25 +130,6 @@
 
 .modal-actions svg {
   margin-right: 0.5rem;
-}
-
-.button-primary {
-  color: var(--text-primary);
-  background-color: rgba(var(--gradient-start-rgb), 0.7);
-}
-
-.button-primary:active {
-  background-color: rgba(var(--gradient-start-rgb), 0.9);
-}
-
-.button-outline {
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  background-color: transparent;
-}
-
-.button-outline:active {
-  background-color: var(--bg-button-hover);
 }
 
 @media (min-width: 102.4rem) {

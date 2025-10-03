@@ -3,8 +3,7 @@
   max-height: 20rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  margin-top: var(--space-xxs);
-  margin-bottom: var(--space-xxs);
+  margin: var(--space-xxs) var(--space-lg);
   background: var(--bg-secondary);
   box-shadow: 0 0.4rem 1.2rem rgba(var(--black-rgb), 0.15);
   overflow-y: auto;
@@ -28,7 +27,7 @@
 }
 
 .suggestion-item:active {
-  background-color: var(--bg-button-hover);
+  background-color: var(--bg-tertiary);
 }
 
 .suggestion-item svg {

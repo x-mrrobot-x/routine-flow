@@ -5,7 +5,23 @@
   user-select: none;
 }
 
-*::-webkit-scrollbar {
+::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--gradient-start-rgb), 0.1);
+  border-radius: 50px;
+}
+
+.timeline-container::-webkit-scrollbar,
+.app-container::-webkit-scrollbar,
+.color-picker::-webkit-scrollbar,
+.category-buttons::-webkit-scrollbar {
   display: none;
 }
 
@@ -15,4 +31,5 @@ select,
 textarea {
   font-family: inherit;
   border: none;
+  outline: none;
 }

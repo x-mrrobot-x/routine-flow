@@ -94,7 +94,7 @@ const CategoryForm = (() => {
     state.editingId = null;
     CategoryFormUtils.selectColor(DEFAULT_COLOR, state, elements);
     elements.saveBtn.innerHTML = `${Icons.getIcon("plus")} ${I18n.get(
-      "category_add_button"
+      "add_button"
     )}`;
   }
 
@@ -104,7 +104,7 @@ const CategoryForm = (() => {
     state.isEditing = true;
     state.editingId = category.id;
     elements.saveBtn.innerHTML = `${Icons.getIcon("save")} ${I18n.get(
-      "category_save_button"
+      "save_button"
     )}`;
   }
 

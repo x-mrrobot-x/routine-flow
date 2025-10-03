@@ -12,12 +12,7 @@
 }
 
 .routine-card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background-color: var(--bg-secondary);
-  box-shadow:
-    0 0.4rem 0.6rem -0.1rem rgba(var(--black-rgb), 0.1),
-    0 0.2rem 0.4rem -0.1rem rgba(var(--black-rgb), 0.06);
+  padding: var(--space-md);
   overflow: hidden;
   transition: all 0.3s;
 }
@@ -26,23 +21,18 @@
   transform: scale(1.03);
 }
 
-.routine-card.inactive {
-  opacity: 0.6;
-  filter: grayscale(1);
-}
-
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--space-md);
-  padding-top: var(--space-sm);
 }
 
 .card-title {
   color: var(--text-secondary);
   font-size: calc(var(--font-md) + 0.1rem);
-  font-weight: 500;
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -73,23 +63,28 @@
   color: var(--text-primary);
 }
 
-.card-body {
-  padding: 0 var(--space-md);
-  padding-top: var(--space-xs);
-}
-
 .card-description {
   font-size: var(--font-sm);
   color: var(--text-muted);
+  font-weight: 400;
+  line-height: var(--lh-md);
+  margin-top: var(--space-sm);
+}
+
+.card-time,
+.card-command,
+.card-days {
+  display: flex;
+  align-items: center;
+  margin-top: var(--space-xs);
 }
 
 .card-time {
-  display: flex;
-  align-items: center;
   margin-top: var(--space-sm);
 }
 
 .card-time svg,
+.card-command svg,
 .card-days svg {
   color: var(--text-muted);
   width: 1.6rem;
@@ -102,65 +97,38 @@
   font-size: var(--font-xs);
 }
 
-.card-command {
-  display: flex;
-  align-items: center;
-  margin-top: var(--space-xs);
-}
-
-.card-command svg {
-  color: var(--text-muted);
-  width: 1.6rem;
-  height: 1.6rem;
-  margin-right: var(--space-xs);
-}
-
 .card-command code {
-  color: var(--text-secondary);
-  font-size: var(--font-xs);
-  padding: 0.3rem 0.6rem;
+  font-family: Courier, monospace;
+  color: var(--text-muted);
+  font-weight: bold;
+  font-size: var(--font-sm);
+  padding: 0.2rem var(--space-xs);
   border-radius: var(--radius-sm);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    rgba(var(--gradient-start-rgb), 0.1),
-    rgba(var(--gradient-end-rgb), 0.02)
-  );
-}
-
-.card-days {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: var(--space-xs);
-  margin-bottom: var(--space-md);
+  background: var(--bg-tertiary);
 }
 
 .day-tag {
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: var(--font-xs);
+  font-family: Roboto;
   padding: 0.3rem var(--space-xs);
   margin-right: var(--space-xs);
   border-radius: var(--radius-sm);
-  background: linear-gradient(
-    180deg,
-    rgba(var(--gradient-start-rgb), 0.1),
-    rgba(var(--gradient-end-rgb), 0.02)
-  );
+  background: var(--bg-tertiary);
 }
 
 /* Card actions */
 
 .card-footer {
   display: none;
-  padding: 0 var(--space-md);
-  padding-bottom: var(--space-sm);
 }
 
 .routine-card:hover .card-footer {
   display: block;
+  margin-top: var(--space-md);
 }
 
 .card-actions {
@@ -202,6 +170,33 @@
   background-color: var(--text-muted);
 }
 
+/* Inactive routines */
+
+[data-theme="light"] .routine-card.inactive {
+  opacity: 0.8;
+  background-color: hsla(240, 20%, 15%, 0.8);
+}
+
+[data-theme="dark"] .routine-card.inactive {
+  opacity: 0.6;
+  filter: grayscale(0.6);
+}
+
+.routine-card.inactive .priority-badge,
+.routine-card.inactive button {
+  opacity: 0.6;
+  filter: grayscale(1);
+}
+
+.routine-card.inactive .card-command code,
+.routine-card.inactive .day-tag {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.routine-card.inactive .card-actions {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 /* Empty state */
 
 .empty-state {
@@ -229,7 +224,7 @@
 
 .empty-text {
   font-size: var(--font-lg);
-  color: var(--text-secondary);
+  color: var(--text-muted);
   max-width: 40ch;
   margin-bottom: var(--space-xl);
 }
@@ -243,6 +238,12 @@
   margin-right: var(--space-sm);
   width: var(--icon-md);
   height: var(--icon-md);
+}
+
+@media (min-width: 60rem) {
+  .routines-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (min-width: 102.4rem) {
@@ -259,11 +260,5 @@
 @media (min-width: 128rem) {
   .routines-grid {
     grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (min-width: 60rem) {
-  .routines-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }

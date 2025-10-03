@@ -91,7 +91,7 @@ const RoutineRenderUtils = (() => {
   }
 
   function getCardClass(routine) {
-    return `routine-card${!routine.active ? " inactive" : ""}`;
+    return `routine-card card ${!routine.active ? " inactive" : ""}`;
   }
 
   function clearGrid(elements) {
@@ -161,7 +161,6 @@ const RoutineRenderUtils = (() => {
   }
 
   return {
-    getPriorityConfig,
     createCardHTML,
     createDayTags,
     createActionBtn,
@@ -299,7 +298,6 @@ const RoutineRenderer = (() => {
   }
 
   return {
-    init,
-    getPriorityConfig: RoutineRenderUtils.getPriorityConfig
+    init
   };
 })();

@@ -35,7 +35,11 @@ const CommandUtils = (() => {
       desc: "command_lockscreen_description",
       icon: "lock-screen"
     },
-    { cmd: "/run_task [task]", desc: "command_task_description", icon: "play" }
+    {
+      cmd: "/run_task [task]",
+      desc: "command_task_description",
+      icon: "play"
+    }
   ];
 
   function createSuggestionCommand(command) {

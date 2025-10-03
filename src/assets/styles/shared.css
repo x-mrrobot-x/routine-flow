@@ -1,9 +1,32 @@
+input,
+textarea,
+select,
+.filters-bar,
+.search-wrapper {
+  outline: none;
+  font-size: var(--font-sm);
+  color: var(--text-primary);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-md);
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.search-wrapper input,
+.filters-bar .search-wrapper {
+  border: none;
+  box-shadow: none !important;
+  border-radius: 0;
+  background: transparent;
+}
+
 input:focus,
 textarea:focus,
 select:focus,
+.filters-bar:not(.extended):has(input:focus),
 .search-wrapper:focus-within {
-  outline: none;
-  border-color: var(--ring);
+  border-color: var(--border-hover);
   box-shadow: 0 0 0 0.2rem rgba(var(--gradient-start-rgb), 0.3);
 }
 
@@ -33,7 +56,7 @@ svg {
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  border: 1px solid rgba(var(--gradient-start-rgb), 0.3);
+  border: 1px solid var(--border);
   min-width: 1.8rem;
   min-height: 1.8rem;
   color: rgba(var(--gradient-start-rgb), 1);
@@ -42,4 +65,60 @@ svg {
   border-radius: var(--radius-full);
   aspect-ratio: 1 / 1;
   background: rgba(var(--gradient-start-rgb), 0.3);
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  backdrop-filter: blur(2rem);
+  box-shadow: 0 0.1rem 0.2rem 0.1rem rgba(var(--black-rgb), 0.1);
+}
+
+.select-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.select-wrapper::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  right: var(--space-sm);
+  display: inline-block;
+  border-left: 0.4rem solid transparent;
+  border-right: 0.4rem solid transparent;
+  border-top: 0.4rem solid var(--text-secondary);
+  transform: translateY(-50%);
+}
+
+.select {
+  appearance: none;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  padding: var(--space-xs) var(--space-sm);
+  background: transparent;
+}
+
+/* Search */
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.search-wrapper svg {
+  color: var(--text-muted);
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  margin-right: var(--space-sm);
+}
+
+.input-search {
+  flex: 1;
+  padding: var(--space-xs) 0;
+  padding-right: var(--space-xs);
+  border-right: 1px solid var(--border-input);
 }

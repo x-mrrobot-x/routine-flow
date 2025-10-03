@@ -41,16 +41,9 @@
 .form-input,
 .form-textarea,
 .form-select {
-  font-size: var(--font-sm);
-  color: var(--text-primary);
   width: 100%;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: var(--space-xs) var(--space-sm);
-  background-color: rgba(var(--bg-primary-rgb), .6);
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  padding: 1rem var(--space-sm);
+  background: transparent;
 }
 
 .form-input:read-only {
@@ -58,7 +51,6 @@
 }
 
 .form-textarea {
-  min-height: 8rem;
   resize: none;
 }
 

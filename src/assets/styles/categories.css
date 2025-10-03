@@ -8,6 +8,8 @@
   flex: 1;
   display: flex;
   overflow-x: auto;
+  padding-top: .1rem;
+  padding-bottom: .2rem;
 }
 
 .category-button {
@@ -16,19 +18,13 @@
   gap: var(--space-xs);
   white-space: nowrap;
   padding: var(--space-xs) var(--space-md);
-  border: 1px solid rgba(var(--gradient-start-rgb), 0.1);
   border-radius: var(--radius-full);
   margin-right: var(--space-xs);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--gradient-start-rgb), 0.08),
-    rgba(var(--gradient-end-rgb), 0.02)
-  );
-  transition: all 0.2s ease;
+  transition: all .3s ease;
 }
 
 .category-button.active {
-  border-color: var(--category-color);
+  border-color: rgba(var(--gradient-start-rgb), 0.6);
 }
 
 .category-name {
@@ -44,171 +40,18 @@
 
 .add-category-btn {
   padding: var(--space-xxs);
-  border: 1px dashed rgba(var(--gradient-start-rgb), 0.4);
   margin-left: var(--space-sm);
   border-radius: 50px;
+  border: 1px dashed rgba(var(--gradient-start-rgb), 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--gradient-start-rgb), 0.08),
+    rgba(var(--gradient-end-rgb), 0.01)
+  );
+  backdrop-filter: blur(5px);
+  box-shadow: rgba(var(--black-rgb), 0.2) 0 0.1rem 0.4rem .1rem;
 }
 
 .add-category-btn svg {
-  color: rgba(var(--gradient-start-rgb), 0.4);
-}
-
-/* Category Modal */
-
-#category-modal .modal-content {
-  height: 90%;
-}
-
-#category-modal .form {
-  flex: none;
-  border: 1px dashed var(--border);
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
-}
-
-#category-modal .form-group {
-  min-width: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  transition: border 0.3s ease;
-}
-
-#category-modal .form-group:nth-child(2) {
-  margin-top: var(--space-md);
-}
-
-#category-modal .form-group:focus-within {
-  border: 1px solid var(--ring);
-}
-
-#category-modal .form-label {
-  margin-left: var(--space-md);
-  padding: 0 var(--space-xxs);
-}
-
-#category-modal .form-input {
-  background: transparent;
-  border: none;
-  padding: var(--space-md);
-  padding-top: var(--space-xs);
-  box-shadow: none;
-}
-
-/* Color Picker */
-
-.color-picker {
-  display: flex;
-  gap: var(--space-xs);
-  padding: var(--space-md);
-  padding-top: var(--space-xs);
-  overflow-x: auto;
-}
-
-.color-item {
-  position: relative;
-  width: 3rem;
-  height: 3rem;
-  border: 2px solid transparent;
-  border-radius: 50%;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-}
-
-.color-item:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(var(--black-rgb), 0.3);
-}
-
-.color-item.selected {
-  border-color: var(--text-primary);
-  box-shadow: 0 0 0 1px rgba(var(--text-primary-rgb), 0.3);
-}
-
-.color-item::after {
-  content: "✓";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--text-primary);
-  font-weight: bold;
-  font-size: var(--font-xs);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.color-item.selected::after {
-  opacity: 1;
-}
-
-.categories-section {
-  display: flex;
-  flex-direction: column;
-  margin-top: var(--space-md);
-}
-
-/* Categories Header */
-
-.categories-header {
-  display: flex;
-  align-items: center;
-}
-
-.categories-header h3 {
-  font-size: var(--font-lg);
-}
-
-.categories-count.badge {
-  min-height: 2.2rem;
-  font-weight: 700;
-  margin-left: var(--space-xs);
-}
-
-/* Categories Grid */
-
-.categories-grid {
-  flex: 1;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  max-height: 400px;
-  margin-top: var(--space-md);
-  background: rgba(var(--bg-secondary-rgb), 0.6);
-  overflow-y: auto;
-}
-
-.category-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-md);
-  border-bottom: 1px solid var(--border);
-}
-
-.category-item:last-child {
-  border-bottom: none;
-}
-
-.category-info {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.category-color {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-}
-
-.category-actions {
-  display: flex;
-  gap: var(--space-xxs);
-}
-
-.category-actions svg {
-  pointer-events: none;
-}
-
-.category-actions button {
-  background: transparent;
+  color: rgba(var(--gradient-start-rgb), 0.6);
 }

@@ -1,16 +1,8 @@
 .next-routine {
   position: relative;
   display: none;
-  border: 1px solid rgba(var(--gradient-start-rgb), 0.1);
-  border-radius: var(--radius-md);
   padding: var(--space-md);
   margin-top: var(--space-lg);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--gradient-start-rgb), 0.08),
-    rgba(var(--gradient-end-rgb), 0.01)
-  );
-  box-shadow: 0 0.2rem 0.4rem rgba(var(--black-rgb), 0.1);
   transition: all 0.3s ease;
   animation: fade-in 0.5s ease-out;
   overflow: hidden;

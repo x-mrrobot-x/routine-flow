@@ -24,7 +24,7 @@ const CategoryRenderer = (() => {
     const count = getCount(category.id);
     const isActive = selectedId === category.id;
 
-    btn.className = `category-button ${isActive ? "active" : ""}`;
+    btn.className = `category-button card ${isActive ? "active" : ""}`;
     btn.style = `--category-color: ${category.color}`;
     btn.dataset.id = category.id;
     btn.innerHTML = `

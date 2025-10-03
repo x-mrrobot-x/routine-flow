@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="src/assets/styles/main.css" />
     <link rel="stylesheet" href="src/assets/styles/modal.css" />
     <link rel="stylesheet" href="src/assets/styles/categories.css" />
+    <link rel="stylesheet" href="src/assets/styles/categories-modal.css" />
     <link rel="stylesheet" href="src/assets/styles/next-routine.css" />
     <link rel="stylesheet" href="src/assets/styles/routines.css" />
     <link rel="stylesheet" href="src/assets/styles/routines-modal.css" />
@@ -30,6 +31,7 @@
     <link rel="stylesheet" href="src/assets/styles/settings.css" />
     <link rel="stylesheet" href="src/assets/styles/timeline.css" />
     <link rel="stylesheet" href="src/assets/styles/toast.css" />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -39,6 +41,7 @@
     <script src="src/services/EnvironmentManager.js" defer></script>
     <script src="src/shared/Utils.js" defer></script>
     <script src="src/shared/DOM.js" defer></script>
+    <script src="src/features/settings/components/SettingsUI.js" defer></script>
     <script src="src/services/I18n.js" defer></script>
     <script src="src/services/Icons.js" defer></script>
     <script src="src/shared/RoutineCalculator.js" defer></script>
@@ -75,7 +78,6 @@
       src="src/features/routine/services/RoutineActions.js"
       defer
     ></script>
-
     <script
       src="src/features/categories/components/CategoryForm.js"
       defer
@@ -105,13 +107,18 @@
       src="src/features/routine/components/TaskPickerModal.js"
       defer
     ></script>
-    <script src="src/features/settings/SettingsService.js" defer></script>
-    <script src="src/features/settings/SettingsModal.js" defer></script>
+    <script
+      src="src/features/settings/services/SettingsService.js"
+      defer
+    ></script>
+    <script
+      src="src/features/settings/components/SettingsModal.js"
+      defer
+    ></script>
     <script
       src="src/features/routine/components/TimelineModal.js"
       defer
     ></script>
-
     <script src="src/services/EventBus.js" defer></script>
     <script src="src/App.js" defer></script>
   </head>
@@ -132,24 +139,25 @@
       <!-- Main -->
       <main class="main">
         <!-- Filters -->
-        <div class="filters-bar" id="filters-bar">
+        <div class="filters-bar card" id="filters-bar">
           <div class="filters-header">
+            <label for="search-filter" data-i18n="search_filter_label"
+              >Buscar</label
+            >
+            <div class="search-wrapper">
+              <i data-icon="search"></i>
+              <input
+                type="search"
+                id="search-filter"
+                class="input-search"
+                placeholder="Buscar rotinas..."
+                data-i18n="search_placeholder"
+              />
+            </div>
+
             <button id="toggle-filters-btn" class="toggle-filters-btn">
               <i data-icon="filter"></i>
-              <span data-i18n="filters_title">Filtros</span>
-              <i class="filter-chevron" data-icon="chevron-down"></i>
             </button>
-          </div>
-
-          <div class="search-wrapper">
-            <i data-icon="search"></i>
-            <input
-              type="text"
-              id="search-filter"
-              placeholder="Buscar rotinas..."
-              class="input-search"
-              data-i18n="search_placeholder"
-            />
           </div>
 
           <div class="advanced-filters">
@@ -215,7 +223,7 @@
           </div>
         </div>
 
-        <section class="next-routine" id="next-routine">
+        <section class="next-routine card" id="next-routine">
           <header class="next-routine-title">
             <h3 data-i18n="next_routine_title">Próxima Rotina</h3>
             <i data-icon="chevron-right"></i>
@@ -504,6 +512,7 @@
                   id="description"
                   name="description"
                   class="form-textarea"
+                  rows="3"
                   placeholder="Ex: 30 minutos de exercícios para começar o dia com energia"
                   data-i18n="form_placeholder_description"
                 ></textarea>
@@ -537,11 +546,13 @@
                     data-i18n="form_label_category"
                     >Categoria</label
                   >
-                  <select
-                    id="category-select"
-                    name="category"
-                    class="form-select"
-                  ></select>
+                  <div class="select-wrapper">
+                    <select
+                      id="category-select"
+                      name="category"
+                      class="select"
+                    ></select>
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -551,13 +562,23 @@
                     data-i18n="form_label_priority"
                     >Prioridade</label
                   >
-                  <select id="priority" name="priority" class="form-select">
-                    <option value="low" data-i18n="priority_low">Baixa</option>
-                    <option value="medium" selected data-i18n="priority_medium">
-                      Média
-                    </option>
-                    <option value="high" data-i18n="priority_high">Alta</option>
-                  </select>
+                  <div class="select-wrapper">
+                    <select id="priority" name="priority" class="select">
+                      <option value="low" data-i18n="priority_low">
+                        Baixa
+                      </option>
+                      <option
+                        value="medium"
+                        selected
+                        data-i18n="priority_medium"
+                      >
+                        Média
+                      </option>
+                      <option value="high" data-i18n="priority_high">
+                        Alta
+                      </option>
+                    </select>
+                  </div>
                   <div class="form-error" id="priority-error"></div>
                 </div>
               </div>
@@ -566,7 +587,14 @@
                 <label for="time" class="form-label" data-i18n="form_label_time"
                   >Horário</label
                 >
-                <input id="time" name="time" type="time" class="form-input" />
+                <div class="select-wrapper">
+                  <input
+                    id="time"
+                    name="time"
+                    type="time"
+                    class="time select"
+                  />
+                </div>
                 <div class="form-error" id="time-error"></div>
               </div>
 
@@ -660,11 +688,13 @@
                     id="specific-date-container"
                     class="specific-date-container"
                   >
-                    <input
-                      type="date"
-                      id="specific-date-input"
-                      class="specific-date-input"
-                    />
+                    <div class="select-wrapper">
+                      <input
+                        type="date"
+                        id="specific-date-input"
+                        class="specific-date-input select"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -754,9 +784,9 @@
             <legend
               for="new-command-input"
               class="form-label"
-              data-i18n="form_label_new_command"
+              data-i18n="form_label_select_command"
             >
-              Comando
+              Selecionar Comando
             </legend>
 
             <input
@@ -811,11 +841,11 @@
             class="modal-title text-gradient"
             data-i18n="settings_modal_title"
           >
-            Anúncio de Rotinas
+            Cofigurações
           </h2>
 
           <p class="modal-description" data-i18n="settings_modal_description">
-            Configure como ser notificado quando uma rotina executar.
+            Personalize as configurações do aplicativo.
           </p>
 
           <button type="button" id="settings-modal-close" class="modal-close">
@@ -823,8 +853,16 @@
           </button>
         </header>
 
+        <div class="settings-divider"></div>
+
         <div class="modal-body">
-          <div class="settings-list">
+          <section class="settings-section">
+            <h3
+              class="settings-section-title"
+              data-i18n="notification_settings"
+            >
+              Notificação
+            </h3>
             <div class="setting-item">
               <label for="voice-toggle" data-i18n="setting_voice_label"
                 >Anunciar com voz do google</label
@@ -834,7 +872,7 @@
 
             <div class="setting-item">
               <label for="toast-toggle" data-i18n="setting_toast_label"
-                >Exibir toast na tela</label
+                >Exibir notificação na tela</label
               >
               <input type="checkbox" id="toast-toggle" />
             </div>
@@ -845,7 +883,26 @@
               >
               <input type="checkbox" id="vibrate-toggle" />
             </div>
-          </div>
+          </section>
+
+          <div class="settings-divider"></div>
+
+          <section class="settings-section">
+            <h3 class="settings-section-title" data-i18n="appearance_settings">
+              Aparência
+            </h3>
+            <div class="setting-item">
+              <label for="theme-select" data-i18n="setting_theme_label"
+                >Tema da aplicação</label
+              >
+              <div class="select-wrapper">
+                <select id="theme-select" class="theme-select select">
+                  <option value="dark" data-i18n="theme_dark">Escuro</option>
+                  <option value="light" data-i18n="theme_light">Claro</option>
+                </select>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>

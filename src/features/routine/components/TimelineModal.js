@@ -1,4 +1,10 @@
 const TimelineModal = (() => {
+  const RGB_MAP = {
+    past: "210, 230, 255",
+    current: "16, 185, 129",
+    upcoming: "59, 130, 246"
+  };
+
   const elements = {
     modal: DOM.$("#timeline-modal"),
     closeBtn: DOM.$("#timeline-modal-close"),
@@ -67,15 +73,13 @@ const TimelineModal = (() => {
         const isNext = index === nextIndex;
         const statusClass = getStatusClass(routine.time, currentTime, isNext);
         const time = formatTime(routine.time);
-        const priority = RoutineRenderer.getPriorityConfig(routine.priority);
 
         return `
-        <div class="timeline-item ${statusClass}">
+        <div class="timeline-item ${statusClass}" style="--status-rgb: ${RGB_MAP[statusClass]}; --item-index: ${index}">
           <div class="timeline-time">${time}</div>
           <div class="timeline-point"></div>
           <div class="timeline-card">
             <h3 class="timeline-card-title">${routine.title}</h3>
-            <span class="priority-badge ${priority.className}">${priority.icon}</span>
           </div>
         </div>
       `;

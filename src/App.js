@@ -1,6 +1,7 @@
 const App = (() => {
   async function init() {
     Icons.init();
+    SettingsUI.init();
     await I18n.init();
     RoutineService.init();
     CategoryService.init();

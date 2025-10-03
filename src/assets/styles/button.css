@@ -60,3 +60,22 @@
   width: 2.4rem;
   height: 2.4rem;
 }
+
+.button-primary {
+  color: var(--text-primary);
+  background-color: rgba(var(--gradient-start-rgb), 0.7);
+}
+
+.button-primary:active {
+  background-color: rgba(var(--gradient-start-rgb), 0.9);
+}
+
+.button-outline {
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  background-color: var(--bg-secondary);
+}
+
+.button-outline:active {
+  background-color: var(--bg-button-hover);
+}
